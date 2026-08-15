@@ -1,0 +1,2057 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EFB Pilot Tablet</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div id="app">
+
+    <!-- =========================================================
+         EFB HEADER
+    ========================================================== -->
+
+    <header class="topbar">
+
+        <div class="topbar-left">
+            <div class="date" id="dateDisplay">SAT AUG 15</div>
+        </div>
+
+        <div class="topbar-center">
+            <div class="clock" id="clock">19:50</div>
+        </div>
+
+        <div class="topbar-right">
+            <div class="battery">
+                <span id="batteryPercent">100%</span>
+
+                <div class="battery-icon">
+                    <div id="batteryLevel"></div>
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         MAIN EFB
+    ========================================================== -->
+
+    <main class="screen">
+
+        <!-- =====================================================
+             HOME
+        ====================================================== -->
+
+        <section id="page-home" class="page active">
+            <div class="home-content">
+                <div class="efb-title">
+                    <span class="title-small">ELECTRONIC</span>
+                    <span class="title-large">FLIGHT BAG</span>
+                </div>
+
+                <div class="home-actions">
+                    <button class="primary-button" onclick="newFlight()">
+                        NEW FLIGHT
+                    </button>
+                    <button class="secondary-button" onclick="openPage('saved')">
+                        SAVED FLIGHTS
+                    </button>
+                </div>
+
+                <div class="app-grid">
+                    <button class="app-card" onclick="openPage('flightcenter')">
+                        <div class="app-icon flight-icon">✈</div>
+                        <div class="app-name">Flight Center</div>
+                        <div class="app-description">FLIGHT OPERATIONS CENTER</div>
+                    </button>
+
+                    <button class="app-card" onclick="openPage('ground')">
+                        <div class="app-icon ground-icon">G</div>
+                        <div class="app-name">Ground</div>
+                        <div class="app-description">GROUND OPERATIONS</div>
+                    </button>
+
+                    <button class="app-card" onclick="openPage('flightplan')">
+                        <div class="app-icon flight-icon">✈</div>
+                        <div class="app-name">Flight Plan</div>
+                        <div class="app-description">FLIGHT MANAGEMENT</div>
+                    </button>
+
+                    <button class="app-card" onclick="openPage('checklist')">
+                        <div class="app-icon checklist-icon">✓</div>
+                        <div class="app-name">Checklist</div>
+                        <div class="app-description">FLIGHT PROCEDURES</div>
+                    </button>
+
+                    <button class="app-card" onclick="openPage('briefing')">
+                        <div class="app-icon briefing-icon">≡</div>
+                        <div class="app-name">Flight Briefing</div>
+                        <div class="app-description">OPERATIONAL SUMMARY</div>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================
+             FLIGHT CENTER
+             Central architecture for the active flight.
+             Internal modules are intentionally placeholders for now.
+        ====================================================== -->
+
+        <section id="page-flightcenter" class="page">
+            <div class="page-header">
+                <button class="header-button" onclick="openPage('home')">←</button>
+                <div>
+                    <div class="page-title">FLIGHT CENTER</div>
+                    <div class="page-subtitle">FLIGHT OPERATIONS CONTROL</div>
+                </div>
+            </div>
+
+            <div class="flight-center-header">
+                <div class="flight-center-identity">
+                    <span class="flight-center-label">ACTIVE FLIGHT</span>
+                    <strong id="fcFlightName">NO FLIGHT</strong>
+                    <span id="fcRoute">---- → ----</span>
+                </div>
+                <div class="flight-center-status" id="fcStatus">DRAFT</div>
+            </div>
+
+            <div class="flight-center-grid">
+
+                <button class="flight-center-card" onclick="openPage('map')">
+                    <span class="fc-icon">⌁</span>
+                    <span class="fc-name">MAP</span>
+                    <small>ROUTE / POSITION</small>
+                </button>
+
+                <button class="flight-center-card" onclick="openPage('flightplan')">
+                    <span class="fc-icon">✈</span>
+                    <span class="fc-name">FLIGHT</span>
+                    <small>FLIGHT PLAN</small>
+                </button>
+
+                <button class="flight-center-card" onclick="openPage('passengers')">
+                    <span class="fc-icon">♙</span>
+                    <span class="fc-name">PASSENGERS</span>
+                    <small>LOAD / CABIN</small>
+                </button>
+
+                <button class="flight-center-card" onclick="openPage('cabincrew')">
+                    <span class="fc-icon">♙</span>
+                    <span class="fc-name">CABIN CREW</span>
+                    <small>PNC / CABIN</small>
+                </button>
+
+                <button class="flight-center-card" onclick="openPage('flightcrew')">
+                    <span class="fc-icon">♟</span>
+                    <span class="fc-name">FLIGHT CREW</span>
+                    <small>COCKPIT CREW</small>
+                </button>
+
+                <button class="flight-center-card" onclick="openPage('checklist')">
+                    <span class="fc-icon">✓</span>
+                    <span class="fc-name">CHECKLIST</span>
+                    <small>PROCEDURES</small>
+                </button>
+
+                <button class="flight-center-card" onclick="openPage('fuel')">
+                    <span class="fc-icon">◒</span>
+                    <span class="fc-name">FUEL</span>
+                    <small>FUEL / RANGE</small>
+                </button>
+
+                <button class="flight-center-card" onclick="openPage('performance')">
+                    <span class="fc-icon">↗</span>
+                    <span class="fc-name">PERFORMANCE</span>
+                    <small>WEIGHTS / LIMITS</small>
+                </button>
+
+                <button class="flight-center-card" onclick="openPage('weather')">
+                    <span class="fc-icon">☁</span>
+                    <span class="fc-name">WEATHER</span>
+                    <small>METAR / TAF</small>
+                </button>
+
+                <button class="flight-center-card" onclick="openPage('comms')">
+                    <span class="fc-icon">◉</span>
+                    <span class="fc-name">ATC / COMMS</span>
+                    <small>RADIO / ATC</small>
+                </button>
+
+                <button class="flight-center-card" onclick="openPage('ground')">
+                    <span class="fc-icon">G</span>
+                    <span class="fc-name">GROUND</span>
+                    <small>AIRPORT OPS</small>
+                </button>
+
+                <button class="flight-center-card" onclick="openPage('charts')">
+                    <span class="fc-icon">▤</span>
+                    <span class="fc-name">CHARTS</span>
+                    <small>SID / STAR / APP</small>
+                </button>
+
+                <button class="flight-center-card" onclick="openPage('briefing')">
+                    <span class="fc-icon">≡</span>
+                    <span class="fc-name">BRIEFING</span>
+                    <small>FLIGHT SUMMARY</small>
+                </button>
+
+                <button class="flight-center-card" onclick="openPage('cabin')">
+                    <span class="fc-icon">▥</span>
+                    <span class="fc-name">CABIN</span>
+                    <small>CABIN STATUS</small>
+                </button>
+
+                <button class="flight-center-card" onclick="openPage('dispatch')">
+                    <span class="fc-icon">▣</span>
+                    <span class="fc-name">DISPATCH</span>
+                    <small>FLIGHT DOSSIER</small>
+                </button>
+
+            </div>
+        </section>
+
+        <!-- =====================================================
+             FLIGHT CENTER MODULE PLACEHOLDERS
+             Architecture only for now; each module will be built later.
+        ====================================================== -->
+
+        <section id="page-passengers" class="page">
+            <div class="page-header">
+                <button class="header-button" onclick="openPage('flightcenter')">←</button>
+                <div><div class="page-title">PASSENGERS</div><div class="page-subtitle">PASSENGER MANAGEMENT</div></div>
+            </div>
+            <div class="module-placeholder"><strong>PASSENGERS</strong><span>MODULE READY FOR DEVELOPMENT</span></div>
+        </section>
+
+        <section id="page-cabincrew" class="page">
+            <div class="page-header">
+                <button class="header-button" onclick="openPage('flightcenter')">←</button>
+                <div><div class="page-title">CABIN CREW</div><div class="page-subtitle">CABIN CREW MANAGEMENT</div></div>
+            </div>
+            <div class="module-placeholder"><strong>CABIN CREW</strong><span>MODULE READY FOR DEVELOPMENT</span></div>
+        </section>
+
+        <section id="page-flightcrew" class="page">
+            <div class="page-header">
+                <button class="header-button" onclick="openPage('flightcenter')">←</button>
+                <div><div class="page-title">FLIGHT CREW</div><div class="page-subtitle">COCKPIT CREW MANAGEMENT</div></div>
+            </div>
+            <div class="module-placeholder"><strong>FLIGHT CREW</strong><span>MODULE READY FOR DEVELOPMENT</span></div>
+        </section>
+
+        <section id="page-fuel" class="page">
+            <div class="page-header">
+                <button class="header-button" onclick="openPage('flightcenter')">←</button>
+                <div><div class="page-title">FUEL</div><div class="page-subtitle">FUEL MANAGEMENT</div></div>
+            </div>
+            <div class="module-placeholder"><strong>FUEL</strong><span>MODULE READY FOR DEVELOPMENT</span></div>
+        </section>
+
+        <section id="page-performance" class="page">
+            <div class="page-header">
+                <button class="header-button" onclick="openPage('flightcenter')">←</button>
+                <div><div class="page-title">PERFORMANCE</div><div class="page-subtitle">AIRCRAFT PERFORMANCE</div></div>
+            </div>
+            <div class="module-placeholder"><strong>PERFORMANCE</strong><span>MODULE READY FOR DEVELOPMENT</span></div>
+        </section>
+
+        <section id="page-weather" class="page">
+            <div class="page-header">
+                <button class="header-button" onclick="openPage('flightcenter')">←</button>
+                <div><div class="page-title">WEATHER</div><div class="page-subtitle">FLIGHT WEATHER</div></div>
+            </div>
+            <div class="module-placeholder"><strong>WEATHER</strong><span>MODULE READY FOR DEVELOPMENT</span></div>
+        </section>
+
+        <section id="page-comms" class="page">
+            <div class="page-header">
+                <button class="header-button" onclick="openPage('flightcenter')">←</button>
+                <div><div class="page-title">ATC / COMMS</div><div class="page-subtitle">AIR TRAFFIC / COMMUNICATIONS</div></div>
+            </div>
+            <div class="module-placeholder"><strong>ATC / COMMS</strong><span>MODULE READY FOR DEVELOPMENT</span></div>
+        </section>
+
+        <section id="page-charts" class="page">
+            <div class="page-header">
+                <button class="header-button" onclick="openPage('flightcenter')">←</button>
+                <div><div class="page-title">CHARTS</div><div class="page-subtitle">AERONAUTICAL CHARTS</div></div>
+            </div>
+            <div class="module-placeholder"><strong>CHARTS</strong><span>MODULE READY FOR DEVELOPMENT</span></div>
+        </section>
+
+        <section id="page-cabin" class="page">
+            <div class="page-header">
+                <button class="header-button" onclick="openPage('flightcenter')">←</button>
+                <div><div class="page-title">CABIN</div><div class="page-subtitle">CABIN OPERATIONS</div></div>
+            </div>
+            <div class="module-placeholder"><strong>CABIN</strong><span>MODULE READY FOR DEVELOPMENT</span></div>
+        </section>
+
+        <section id="page-dispatch" class="page">
+            <div class="page-header">
+                <button class="header-button" onclick="openPage('flightcenter')">←</button>
+                <div><div class="page-title">DISPATCH</div><div class="page-subtitle">FLIGHT DISPATCH</div></div>
+            </div>
+            <div class="module-placeholder"><strong>DISPATCH</strong><span>MODULE READY FOR DEVELOPMENT</span></div>
+        </section>
+
+
+
+        <!-- =====================================================
+             GROUND
+        ====================================================== -->
+
+        <section id="page-ground" class="page">
+
+            <div class="page-header">
+
+                <button
+                    class="header-button"
+                    onclick="openPage('home')"
+                >
+                    ←
+                </button>
+
+                <div>
+
+                    <div class="page-title">
+                        GROUND
+                    </div>
+
+                    <div class="page-subtitle">
+                        GROUND OPERATIONS
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="ground-layout">
+
+                <div class="ground-brand">
+
+                    <div class="ground-logo">
+                        G
+                    </div>
+
+                    <div>
+
+                        <div class="ground-name">
+                            Ground
+                        </div>
+
+                        <div class="ground-description">
+                            AIRPORT & GROUND OPERATIONS
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="ground-buttons">
+
+                    <!-- ATIS -->
+
+                    <button
+                        class="ground-button"
+                        onclick="openPage('atis')"
+                    >
+                        ATIS
+                    </button>
+
+
+                    <button class="ground-button">
+                        CLEARANCE
+                    </button>
+
+                    <button class="ground-button">
+                        PUSHBACK
+                    </button>
+
+                    <button class="ground-button">
+                        TAXI
+                    </button>
+
+                    <button class="ground-button">
+                        GATES
+                    </button>
+
+                    <button class="ground-button">
+                        AIRPORT MAP
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             ATIS
+        ====================================================== -->
+
+        <section id="page-atis" class="page">
+
+            <div class="page-header">
+
+                <button
+                    class="header-button"
+                    onclick="openPage('ground')"
+                >
+                    ←
+                </button>
+
+                <div>
+
+                    <div class="page-title">
+                        ATIS
+                    </div>
+
+                    <div class="page-subtitle">
+                        AIRPORT INFORMATION SERVICE
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="atis-container">
+
+                <!-- =================================================
+                     ATIS AIRPORT SEARCH
+                ================================================== -->
+
+                <div class="atis-search-panel">
+
+                    <div class="atis-section-title">
+                        AIRPORT
+                    </div>
+
+                    <div class="atis-search-row">
+
+                        <input
+                            id="atisAirportInput"
+                            class="atis-airport-input"
+                            type="text"
+                            maxlength="4"
+                            placeholder="ICAO"
+                            value=""
+                        >
+
+                        <button
+                            class="atis-search-button"
+                            onclick="loadATISAirport()"
+                        >
+                            SEARCH
+                        </button>
+
+                    </div>
+
+                    <div
+                        id="atisAirportStatus"
+                        class="atis-airport-status"
+                    >
+                        ENTER ICAO CODE
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     ATIS INFORMATION
+                ================================================== -->
+
+                <div
+                    id="atisInformation"
+                    class="atis-information"
+                >
+
+                    <!-- WAITING -->
+
+                    <div
+                        id="atisWaiting"
+                        class="atis-waiting"
+                    >
+
+                        <div class="atis-waiting-icon">
+                            ATIS
+                        </div>
+
+                        <div class="atis-waiting-title">
+                            WAITING FOR AIRPORT
+                        </div>
+
+                        <div class="atis-waiting-text">
+                            ENTER AN ICAO CODE TO DISPLAY AIRPORT
+                            ATIS / FREQUENCY INFORMATION.
+                        </div>
+
+                    </div>
+
+
+                    <!-- AIRPORT DATA -->
+
+                    <div
+                        id="atisAirportData"
+                        class="atis-airport-data"
+                        style="display:none;"
+                    >
+
+                        <div class="atis-airport-header">
+
+                            <div>
+
+                                <div
+                                    id="atisAirportName"
+                                    class="atis-airport-name"
+                                >
+                                    ORLY
+                                </div>
+
+                                <div
+                                    id="atisAirportICAO"
+                                    class="atis-airport-icao"
+                                >
+                                    LFPO
+                                </div>
+
+                            </div>
+
+                            <div class="atis-live-status">
+                                ● AVAILABLE
+                            </div>
+
+                        </div>
+
+
+                        <!-- ORLY PREVOL -->
+
+                        <div class="atis-frequency-card">
+
+                            <div class="atis-frequency-main">
+
+                                <div class="atis-service-name">
+                                    Orly Prévol
+                                </div>
+
+                                <div class="atis-service-code">
+                                    LFPO_DEL
+                                </div>
+
+                            </div>
+
+                            <div class="atis-frequency">
+                                121.555
+                            </div>
+
+                        </div>
+
+
+                        <!-- ORLY GROUND -->
+
+                        <div class="atis-frequency-card">
+
+                            <div class="atis-frequency-main">
+
+                                <div class="atis-service-name">
+                                    Orly Sol
+                                </div>
+
+                                <div class="atis-service-code">
+                                    LFPO_GND
+                                </div>
+
+                            </div>
+
+                            <div class="atis-frequency">
+                                121.705
+                            </div>
+
+                        </div>
+
+
+                        <!-- ORLY TOWER -->
+
+                        <div class="atis-frequency-card">
+
+                            <div class="atis-frequency-main">
+
+                                <div class="atis-service-name">
+                                    Orly Tour
+                                </div>
+
+                                <div class="atis-service-code">
+                                    LFPO_TWR
+                                </div>
+
+                            </div>
+
+                            <div class="atis-frequency">
+                                118.700
+                            </div>
+
+                        </div>
+
+
+                        <!-- ORLY DEPARTURE -->
+
+                        <div class="atis-frequency-card">
+
+                            <div class="atis-frequency-main">
+
+                                <div class="atis-service-name">
+                                    Orly Départ
+                                </div>
+
+                                <div class="atis-service-code">
+                                    LFPO_DEP
+                                </div>
+
+                            </div>
+
+                            <div class="atis-frequency">
+                                127.750
+                            </div>
+
+                        </div>
+
+
+                        <!-- ORLY APPROACH -->
+
+                        <div class="atis-frequency-card">
+
+                            <div class="atis-frequency-main">
+
+                                <div class="atis-service-name">
+                                    Orly Approche
+                                </div>
+
+                                <div class="atis-service-code">
+                                    LFPO_APP
+                                </div>
+
+                            </div>
+
+                            <div class="atis-frequency">
+                                123.875
+                            </div>
+
+                        </div>
+
+
+                        <!-- PARIS CONTROL -->
+
+                        <div class="atis-control-section">
+
+                            <div class="atis-control-title">
+                                PARIS CONTRÔLE
+                            </div>
+
+
+                            <!-- LFFF CTR -->
+
+                            <div class="atis-frequency-card control-card">
+
+                                <div class="atis-frequency-main">
+
+                                    <div class="atis-service-name">
+                                        Paris Contrôle
+                                    </div>
+
+                                    <div class="atis-service-code">
+                                        LFFF_CTR
+                                    </div>
+
+                                </div>
+
+                                <div class="atis-frequency">
+                                    120.955
+                                </div>
+
+                            </div>
+
+
+                            <!-- LFFF E CTR -->
+
+                            <div class="atis-frequency-card control-card">
+
+                                <div class="atis-frequency-main">
+
+                                    <div class="atis-service-name">
+                                        Paris Contrôle Est
+                                    </div>
+
+                                    <div class="atis-service-code">
+                                        LFFF_E_CTR
+                                    </div>
+
+                                </div>
+
+                                <div class="atis-frequency">
+                                    132.100
+                                </div>
+
+                            </div>
+
+
+                            <!-- LFFF W CTR -->
+
+                            <div class="atis-frequency-card control-card">
+
+                                <div class="atis-frequency-main">
+
+                                    <div class="atis-service-name">
+                                        Paris Contrôle Ouest
+                                    </div>
+
+                                    <div class="atis-service-code">
+                                        LFFF_W_CTR
+                                    </div>
+
+                                </div>
+
+                                <div class="atis-frequency">
+                                    124.850
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             FLIGHT PLAN
+        ====================================================== -->
+
+        <section id="page-flightplan" class="page">
+
+            <div class="page-header">
+
+                <button
+                    class="header-button"
+                    onclick="openPage('home')"
+                >
+                    ←
+                </button>
+
+                <div>
+
+                    <div class="page-title">
+                        FLIGHT PLAN
+                    </div>
+
+                    <div class="page-subtitle">
+                        FLIGHT MANAGEMENT
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="flightplan-toolbar">
+
+                <button onclick="openPage('newflight')">
+                    NEW FLIGHT
+                </button>
+
+                <button onclick="editFlight()">
+                    EDIT ROUTE
+                </button>
+
+                <button onclick="openMap()">
+                    MAP
+                </button>
+
+                <button onclick="openPage('briefing')">
+                    BRIEFING
+                </button>
+
+                <button onclick="saveCurrentFlight()">
+                    SAVE
+                </button>
+
+                <button onclick="openSavedFlights()">
+                    LOAD
+                </button>
+
+                <button onclick="activateFlight()">
+                    ACTIVATE
+                </button>
+
+            </div>
+
+
+            <div class="flightplan-layout">
+
+                <!-- LEFT -->
+
+                <div class="flight-panel">
+
+                    <div class="panel-title">
+                        ACTIVE FLIGHT
+                    </div>
+
+                    <div class="flight-status-row">
+
+                        <span
+                            id="flightStatus"
+                            class="status draft"
+                        >
+                            DRAFT
+                        </span>
+
+                        <span id="flightNumber">
+                            NO FLIGHT
+                        </span>
+
+                    </div>
+
+
+                    <div class="airport-grid">
+
+                        <div class="airport-box">
+
+                            <label>
+                                DEPARTURE
+                            </label>
+
+                            <input
+                                id="departure"
+                                type="text"
+                                placeholder="ICAO"
+                                maxlength="4"
+                                oninput="updateFlightSummary()"
+                            >
+
+                            <button onclick="searchAirport('departure')">
+                                SEARCH
+                            </button>
+
+                        </div>
+
+
+                        <div class="route-arrow">
+                            →
+                        </div>
+
+
+                        <div class="airport-box">
+
+                            <label>
+                                ARRIVAL
+                            </label>
+
+                            <input
+                                id="arrival"
+                                type="text"
+                                placeholder="ICAO"
+                                maxlength="4"
+                                oninput="updateFlightSummary()"
+                            >
+
+                            <button onclick="searchAirport('arrival')">
+                                SEARCH
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="route-settings">
+
+                        <div class="setting">
+
+                            <label>
+                                DEPARTURE RUNWAY
+                            </label>
+
+                            <select id="departureRunway">
+                                <option value="">
+                                    SELECT
+                                </option>
+                            </select>
+
+                        </div>
+
+
+                        <div class="setting">
+
+                            <label>
+                                SID
+                            </label>
+
+                            <select id="sid">
+                                <option value="">
+                                    SELECT SID
+                                </option>
+                            </select>
+
+                        </div>
+
+
+                        <div class="setting">
+
+                            <label>
+                                AIRCRAFT
+                            </label>
+
+                            <select id="aircraft">
+
+                                <option value="">
+                                    SELECT AIRCRAFT
+                                </option>
+
+                                <option value="B737-800">
+                                    B737-800
+                                </option>
+
+                                <option value="A320">
+                                    A320
+                                </option>
+
+                                <option value="A321">
+                                    A321
+                                </option>
+
+                                <option value="B777-300ER">
+                                    B777-300ER
+                                </option>
+
+                                <option value="C172">
+                                    C172
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="setting">
+
+                            <label>
+                                ARRIVAL RUNWAY
+                            </label>
+
+                            <select id="arrivalRunway">
+                                <option value="">
+                                    SELECT
+                                </option>
+                            </select>
+
+                        </div>
+
+
+                        <div class="setting">
+
+                            <label>
+                                STAR
+                            </label>
+
+                            <select id="star">
+                                <option value="">
+                                    SELECT STAR
+                                </option>
+                            </select>
+
+                        </div>
+
+
+                        <div class="setting">
+
+                            <label>
+                                APPROACH
+                            </label>
+
+                            <select id="approach">
+
+                                <option value="">
+                                    SELECT APPROACH
+                                </option>
+
+                                <option value="ILS">
+                                    ILS
+                                </option>
+
+                                <option value="RNAV">
+                                    RNAV
+                                </option>
+
+                                <option value="VOR">
+                                    VOR
+                                </option>
+
+                                <option value="LOC">
+                                    LOC
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="waypoint-section">
+
+                        <div class="section-heading">
+
+                            <span>
+                                ROUTE
+                            </span>
+
+                            <button onclick="addWaypoint()">
+                                + ADD WAYPOINT
+                            </button>
+
+                        </div>
+
+
+                        <div
+                            id="waypointList"
+                            class="waypoint-list"
+                        >
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RIGHT -->
+
+                <div class="flight-summary-panel">
+
+                    <div class="panel-title">
+                        FLIGHT SUMMARY
+                    </div>
+
+
+                    <div class="summary-item">
+
+                        <span>
+                            ROUTE
+                        </span>
+
+                        <strong id="summaryRoute">
+                            ----
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-item">
+
+                        <span>
+                            DISTANCE
+                        </span>
+
+                        <strong id="totalDistance">
+                            0 NM
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-item">
+
+                        <span>
+                            ALTITUDE
+                        </span>
+
+                        <strong>
+
+                            <input
+                                id="cruiseAltitude"
+                                type="number"
+                                placeholder="FL"
+                                value="350"
+                                onchange="updateFlightSummary()"
+                            >
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-item">
+
+                        <span>
+                            SPEED
+                        </span>
+
+                        <strong>
+
+                            <input
+                                id="cruiseSpeed"
+                                type="number"
+                                value="450"
+                                onchange="updateFlightSummary()"
+                            >
+
+                            KT
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-item">
+
+                        <span>
+                            EST. TIME
+                        </span>
+
+                        <strong id="estimatedTime">
+                            00:00
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-item">
+
+                        <span>
+                            ETA
+                        </span>
+
+                        <strong id="eta">
+                            --
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-item">
+
+                        <span>
+                            FUEL
+                        </span>
+
+                        <strong>
+
+                            <input
+                                id="fuel"
+                                type="number"
+                                value="0"
+                                onchange="updateFlightSummary()"
+                            >
+
+                            KG
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-item">
+
+                        <span>
+                            WAYPOINTS
+                        </span>
+
+                        <strong id="waypointCount">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div
+                        class="map-preview"
+                        onclick="openMap()"
+                    >
+
+                        <div class="map-grid"></div>
+
+                        <div class="map-route"></div>
+
+                        <span>
+                            OPEN MAP
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             MAP
+        ====================================================== -->
+
+        <section id="page-map" class="page">
+
+            <div class="page-header">
+
+                <button
+                    class="header-button"
+                    onclick="openPage('flightplan')"
+                >
+                    ←
+                </button>
+
+                <div>
+
+                    <div class="page-title">
+                        ROUTE MAP
+                    </div>
+
+                    <div class="page-subtitle">
+                        FLIGHT PLAN VISUALIZATION
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="full-map">
+
+                <div class="map-lines"></div>
+
+                <div class="map-airport departure-map">
+                    DEP
+                </div>
+
+                <div id="mapWaypoints"></div>
+
+                <div class="map-airport arrival-map">
+                    ARR
+                </div>
+
+            </div>
+
+
+            <div class="map-information">
+
+                <div>
+
+                    <span>
+                        TOTAL DISTANCE
+                    </span>
+
+                    <strong id="mapDistance">
+                        0 NM
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        ESTIMATED TIME
+                    </span>
+
+                    <strong id="mapTime">
+                        00:00
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        WAYPOINTS
+                    </span>
+
+                    <strong id="mapWaypointCount">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             CHECKLIST
+        ====================================================== -->
+
+        <section id="page-checklist" class="page">
+
+            <div class="page-header">
+
+                <button
+                    class="header-button"
+                    onclick="openPage('home')"
+                >
+                    ←
+                </button>
+
+                <div>
+
+                    <div class="page-title">
+                        CHECKLIST
+                    </div>
+
+                    <div class="page-subtitle">
+                        FLIGHT PROCEDURES
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="checklist-header">
+
+                <div>
+
+                    <div class="checklist-phase">
+                        BEFORE START
+                    </div>
+
+                    <div class="checklist-progress-text">
+
+                        <span id="checkProgress">
+                            0/22
+                        </span>
+
+                        <span>
+                            ITEMS COMPLETED
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="phaseIndicator"
+                    class="phase-indicator"
+                >
+                    IN PROGRESS
+                </div>
+
+            </div>
+
+
+            <div class="progress-bar">
+
+                <div
+                    id="checkProgressBar"
+                    class="progress-bar-fill"
+                    style="width:0%"
+                >
+                </div>
+
+            </div>
+
+
+            <div
+                id="checklistItems"
+                class="checklist-items"
+            >
+            </div>
+
+
+            <div class="checklist-footer">
+
+                <button
+                    id="nextChecklist"
+                    class="next-button"
+                    disabled
+                    onclick="nextChecklistPhase()"
+                >
+                    NEXT →
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             BRIEFING
+        ====================================================== -->
+
+        <section id="page-briefing" class="page">
+
+            <div class="page-header">
+
+                <button
+                    class="header-button"
+                    onclick="openPage('home')"
+                >
+                    ←
+                </button>
+
+                <div>
+
+                    <div class="page-title">
+                        FLIGHT BRIEFING
+                    </div>
+
+                    <div class="page-subtitle">
+                        OPERATIONAL SUMMARY
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="briefing-header">
+
+                <div>
+
+                    <span>
+                        FLIGHT
+                    </span>
+
+                    <strong id="briefingFlight">
+                        NO FLIGHT
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        STATUS
+                    </span>
+
+                    <strong id="briefingStatus">
+                        DRAFT
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="briefing-grid">
+
+                <div class="briefing-card">
+
+                    <span>
+                        1
+                    </span>
+
+                    <strong>
+                        START
+                    </strong>
+
+                    <p>
+                        MISE EN ROUTE AVANT ROULAGE
+                    </p>
+
+                </div>
+
+
+                <div class="briefing-card">
+
+                    <span>
+                        2
+                    </span>
+
+                    <strong>
+                        TAXI
+                    </strong>
+
+                    <p>
+                        AU ROULAGE
+                    </p>
+
+                </div>
+
+
+                <div class="briefing-card">
+
+                    <span>
+                        3
+                    </span>
+
+                    <strong>
+                        RUNWAY
+                    </strong>
+
+                    <p>
+                        POINT PISTE / ARRÊT
+                    </p>
+
+                </div>
+
+
+                <div class="briefing-card">
+
+                    <span>
+                        4
+                    </span>
+
+                    <strong>
+                        TAKEOFF
+                    </strong>
+
+                    <p>
+                        DÉCOLLAGE
+                    </p>
+
+                </div>
+
+
+                <div class="briefing-card">
+
+                    <span>
+                        5
+                    </span>
+
+                    <strong>
+                        CLIMB
+                    </strong>
+
+                    <p>
+                        FIN DE MONTÉE
+                    </p>
+
+                </div>
+
+
+                <div class="briefing-card">
+
+                    <span>
+                        6
+                    </span>
+
+                    <strong>
+                        CRUISE
+                    </strong>
+
+                    <p>
+                        CROISIÈRE
+                    </p>
+
+                </div>
+
+
+                <div class="briefing-card">
+
+                    <span>
+                        7
+                    </span>
+
+                    <strong>
+                        DESCENT
+                    </strong>
+
+                    <p>
+                        DESCENTE
+                    </p>
+
+                </div>
+
+
+                <div class="briefing-card">
+
+                    <span>
+                        8
+                    </span>
+
+                    <strong>
+                        APPROACH
+                    </strong>
+
+                    <p>
+                        APPROCHE
+                    </p>
+
+                </div>
+
+
+                <div class="briefing-card">
+
+                    <span>
+                        9
+                    </span>
+
+                    <strong>
+                        GATE
+                    </strong>
+
+                    <p>
+                        ROULAGE DIRECTION GATE
+                    </p>
+
+                </div>
+
+
+                <div class="briefing-card">
+
+                    <span>
+                        10
+                    </span>
+
+                    <strong>
+                        SHUTDOWN
+                    </strong>
+
+                    <p>
+                        ARRÊT DES MOTEURS
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="briefing-route">
+
+                <div class="panel-title">
+                    ROUTE SUMMARY
+                </div>
+
+                <div id="briefingRoute">
+                    ----
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             SAVED FLIGHTS
+        ====================================================== -->
+
+        <section id="page-saved" class="page">
+
+            <div class="page-header">
+
+                <button
+                    class="header-button"
+                    onclick="openPage('flightplan')"
+                >
+                    ←
+                </button>
+
+                <div>
+
+                    <div class="page-title">
+                        SAVED FLIGHTS
+                    </div>
+
+                    <div class="page-subtitle">
+                        FLIGHT PLAN DATABASE
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="savedFlights"
+                class="saved-flights"
+            >
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             NEW FLIGHT / EDITOR
+        ====================================================== -->
+
+        <section id="page-newflight" class="page">
+            <div class="page-header">
+                <button class="header-button" onclick="openPage('home')">←</button>
+                <div>
+                    <div class="page-title">NEW FLIGHT</div>
+                    <div class="page-subtitle">CREATE FLIGHT</div>
+                </div>
+            </div>
+
+            <div class="new-flight-form">
+                <div class="new-flight-field">
+                    <label for="newFlightName">FLIGHT NAME</label>
+                    <input id="newFlightName" type="text" placeholder="AFR123 / PARIS - NEW YORK">
+                </div>
+
+                <div class="new-flight-field">
+                    <label for="newFlightAircraft">AIRCRAFT</label>
+                    <select id="newFlightAircraft">
+                        <option value="">SELECT AIRCRAFT</option>
+                        <option value="B737-800">B737-800</option>
+                        <option value="A320">A320</option>
+                        <option value="A321">A321</option>
+                        <option value="B777-300ER">B777-300ER</option>
+                        <option value="C172">C172</option>
+                    </select>
+                </div>
+
+                <div class="new-flight-two-columns">
+                    <div class="new-flight-field">
+                        <label for="newDepartureICAO">DEPARTURE ICAO</label>
+                        <input id="newDepartureICAO" type="text" maxlength="4" placeholder="LFPG">
+                    </div>
+                    <div class="new-flight-field">
+                        <label for="newArrivalICAO">ARRIVAL ICAO</label>
+                        <input id="newArrivalICAO" type="text" maxlength="4" placeholder="KJFK">
+                    </div>
+                </div>
+
+                <div class="new-flight-two-columns">
+                    <div class="new-flight-field">
+                        <label for="newDepartureRunway">DEPARTURE RUNWAY</label>
+                        <input id="newDepartureRunway" type="text" placeholder="27L">
+                    </div>
+                    <div class="new-flight-field">
+                        <label for="newSID">SID</label>
+                        <input id="newSID" type="text" placeholder="SID">
+                    </div>
+                </div>
+
+                <div class="new-flight-field">
+                    <label for="newRoute">ROUTE</label>
+                    <textarea id="newRoute" rows="3" placeholder="WAYPOINTS / ROUTE"></textarea>
+                </div>
+
+                <div class="new-flight-two-columns">
+                    <div class="new-flight-field">
+                        <label for="newSTAR">STAR</label>
+                        <input id="newSTAR" type="text" placeholder="STAR">
+                    </div>
+                    <div class="new-flight-field">
+                        <label for="newApproach">APPROACH</label>
+                        <select id="newApproach">
+                            <option value="">SELECT APPROACH</option>
+                            <option value="ILS">ILS</option>
+                            <option value="RNAV">RNAV</option>
+                            <option value="VOR">VOR</option>
+                            <option value="LOC">LOC</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="primary-button" onclick="createCentralFlight()">
+                    CREATE FLIGHT → FLIGHT CENTER
+                </button>
+            </div>
+        </section>
+
+        <section id="page-editor" class="page">
+
+            <div class="page-header">
+
+                <button
+                    class="header-button"
+                    onclick="openPage('flightplan')"
+                >
+                    ←
+                </button>
+
+                <div>
+
+                    <div class="page-title">
+                        FLIGHT EDITOR
+                    </div>
+
+                    <div class="page-subtitle">
+                        ROUTE MANAGEMENT
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="editor">
+
+                <div class="editor-row">
+
+                    <label>
+                        FLIGHT NUMBER
+                    </label>
+
+                    <input
+                        id="editorFlightNumber"
+                        type="text"
+                        placeholder="AFR123"
+                    >
+
+                </div>
+
+
+                <div class="editor-row">
+
+                    <label>
+                        DEPARTURE
+                    </label>
+
+                    <input
+                        id="editorDeparture"
+                        type="text"
+                        placeholder="LFPG"
+                        maxlength="4"
+                    >
+
+                </div>
+
+
+                <div class="editor-row">
+
+                    <label>
+                        ARRIVAL
+                    </label>
+
+                    <input
+                        id="editorArrival"
+                        type="text"
+                        placeholder="KJFK"
+                        maxlength="4"
+                    >
+
+                </div>
+
+
+                <div class="editor-row">
+
+                    <label>
+                        AIRCRAFT
+                    </label>
+
+                    <select id="editorAircraft">
+
+                        <option value="">
+                            SELECT AIRCRAFT
+                        </option>
+
+                        <option value="A320">
+                            A320
+                        </option>
+
+                        <option value="A321">
+                            A321
+                        </option>
+
+                        <option value="B737-800">
+                            B737-800
+                        </option>
+
+                        <option value="B777-300ER">
+                            B777-300ER
+                        </option>
+
+                        <option value="C172">
+                            C172
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    class="primary-button"
+                    onclick="applyEditor()"
+                >
+                    CREATE / APPLY FLIGHT
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             AIRPORT SEARCH
+        ====================================================== -->
+
+        <section id="page-airport-search" class="page">
+
+            <div class="page-header">
+
+                <button
+                    class="header-button"
+                    onclick="openPage('flightplan')"
+                >
+                    ←
+                </button>
+
+                <div>
+
+                    <div class="page-title">
+                        AIRPORT SEARCH
+                    </div>
+
+                    <div class="page-subtitle">
+                        SEARCH AIRPORT
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="airport-search">
+
+                <input
+                    id="airportSearchInput"
+                    type="text"
+                    placeholder="ICAO / NAME / CITY"
+                    oninput="filterAirports()"
+                >
+
+                <div id="airportResults"></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             CONFIRMATION
+        ====================================================== -->
+
+        <div
+            id="modalOverlay"
+            class="modal-overlay"
+            onclick="closeModal(event)"
+        >
+
+            <div class="modal">
+
+                <div
+                    id="modalTitle"
+                    class="modal-title"
+                >
+                    CONFIRMATION
+                </div>
+
+                <div
+                    id="modalMessage"
+                    class="modal-message"
+                >
+                </div>
+
+                <div class="modal-actions">
+
+                    <button
+                        class="secondary-button"
+                        onclick="closeModal()"
+                    >
+                        CANCEL
+                    </button>
+
+                    <button
+                        id="modalConfirm"
+                        class="primary-button"
+                    >
+                        CONFIRM
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================================================
+         BOTTOM NAVIGATION
+    ========================================================== -->
+
+    <nav class="bottom-nav">
+
+        <button onclick="openPage('home')">
+
+            <span>
+                ⌂
+            </span>
+
+            HOME
+
+        </button>
+
+
+        <button onclick="openPage('flightplan')">
+
+            <span>
+                ✈
+            </span>
+
+            FLIGHT
+
+        </button>
+
+
+        <button onclick="openPage('checklist')">
+
+            <span>
+                ✓
+            </span>
+
+            CHECK
+
+        </button>
+
+
+        <button onclick="openPage('briefing')">
+
+            <span>
+                ≡
+            </span>
+
+            BRIEF
+
+        </button>
+
+    </nav>
+
+
+    <!-- =========================================================
+         STATUS BAR
+    ========================================================== -->
+
+    <div class="system-status">
+
+        <span>
+            EFB SYSTEM
+        </span>
+
+        <span class="system-online">
+            ● ONLINE
+        </span>
+
+    </div>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>

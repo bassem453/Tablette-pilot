@@ -1,0 +1,2813 @@
+/* ============================================================
+   EFB PILOT TABLET
+   ============================================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --green: #63ff9a;
+    --green-dark: #163d2a;
+
+    --cyan: #54dfff;
+    --blue: #287ca3;
+
+    --orange: #ffb347;
+    --red: #ff5555;
+
+    --white: #f2f5f7;
+    --gray: #8d969d;
+
+    --bg: #071014;
+    --panel: rgba(11, 22, 28, 0.94);
+    --panel-light: rgba(21, 35, 42, 0.95);
+
+    --border: rgba(124, 180, 198, 0.22);
+
+    --shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    color: var(--white);
+
+    background:
+        #071014
+        url("https://flightsimulator.azureedge.net/wp-content/uploads/2019/11/KittyHawk_E3_withLogo_003-2-scaled.jpg")
+        center / cover
+        no-repeat fixed;
+}
+
+/* ============================================================
+   DARK OVERLAY
+   ============================================================ */
+
+body::before {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            rgba(2, 10, 14, 0.72),
+            rgba(2, 10, 14, 0.91)
+        );
+
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* ============================================================
+   APP
+   ============================================================ */
+
+#app {
+    width: 100vw;
+    height: 100vh;
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(30, 65, 78, 0.16),
+            transparent 55%
+        );
+}
+
+/* ============================================================
+   TOP BAR
+   ============================================================ */
+
+.topbar {
+    height: 70px;
+    flex-shrink: 0;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+
+    padding: 0 28px;
+
+    background:
+        linear-gradient(
+            rgba(5, 14, 18, 0.96),
+            rgba(8, 18, 23, 0.88)
+        );
+
+    border-bottom:
+        1px solid
+        rgba(113, 191, 214, 0.18);
+
+    box-shadow:
+        0 5px 20px
+        rgba(0, 0, 0, 0.45);
+
+    z-index: 20;
+}
+
+.topbar-left {
+    text-align: left;
+}
+
+.topbar-center {
+    text-align: center;
+}
+
+.topbar-right {
+    text-align: right;
+}
+
+.date {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: #d9e7ec;
+}
+
+.clock {
+    font-size: 32px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    color: white;
+
+    text-shadow:
+        0 0 12px
+        rgba(255, 255, 255, 0.16);
+}
+
+.battery {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 9px;
+
+    font-size: 14px;
+    color: #d5e1e5;
+}
+
+.battery-icon {
+    width: 28px;
+    height: 13px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.6);
+
+    border-radius: 2px;
+    padding: 2px;
+
+    position: relative;
+}
+
+.battery-icon::after {
+    content: "";
+
+    position: absolute;
+    right: -4px;
+    top: 3px;
+
+    width: 3px;
+    height: 5px;
+
+    background:
+        rgba(255, 255, 255, 0.7);
+
+    border-radius: 0 1px 1px 0;
+}
+
+#batteryLevel {
+    height: 100%;
+    width: 100%;
+
+    background: var(--green);
+
+    border-radius: 1px;
+
+    box-shadow:
+        0 0 7px
+        rgba(99, 255, 154, 0.5);
+}
+
+/* ============================================================
+   SCREEN
+   ============================================================ */
+
+.screen {
+    flex: 1;
+    min-height: 0;
+
+    position: relative;
+    overflow: hidden;
+}
+
+/* ============================================================
+   PAGES
+   ============================================================ */
+
+.page {
+    display: none;
+
+    width: 100%;
+    height: 100%;
+
+    overflow-y: auto;
+
+    padding:
+        26px 32px
+        90px;
+
+    scrollbar-width: thin;
+
+    scrollbar-color:
+        #31505b
+        transparent;
+}
+
+.page.active {
+    display: block;
+}
+
+/* ============================================================
+   PAGE HEADER
+   ============================================================ */
+
+.page-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    margin-bottom: 24px;
+
+    border-bottom:
+        1px solid
+        var(--border);
+
+    padding-bottom: 18px;
+}
+
+.header-button {
+    width: 45px;
+    height: 45px;
+
+    border:
+        1px solid
+        rgba(150, 210, 225, 0.25);
+
+    background:
+        rgba(16, 34, 42, 0.85);
+
+    color: white;
+
+    border-radius: 7px;
+
+    font-size: 24px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.header-button:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    transform: translateX(-2px);
+}
+
+.page-title {
+    font-size: 25px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.page-subtitle {
+    color: var(--gray);
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin-top: 4px;
+}
+
+/* ============================================================
+   HOME
+   ============================================================ */
+
+.home-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding-top: 35px;
+}
+
+.efb-title {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 40px;
+
+    border-left:
+        3px solid
+        var(--green);
+
+    padding-left: 18px;
+}
+
+.title-small {
+    color: var(--gray);
+    font-size: 12px;
+    letter-spacing: 5px;
+}
+
+.title-large {
+    font-size: 42px;
+    letter-spacing: 4px;
+    font-weight: 300;
+}
+
+.app-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+}
+
+.app-card {
+    min-height: 185px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18, 37, 44, 0.95),
+            rgba(6, 17, 22, 0.97)
+        );
+
+    border:
+        1px solid
+        rgba(130, 191, 207, 0.2);
+
+    border-radius: 12px;
+
+    color: white;
+
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 15px;
+
+    box-shadow: var(--shadow);
+
+    transition:
+        transform 0.2s,
+        border 0.2s,
+        background 0.2s;
+}
+
+.app-card:hover {
+    transform: translateY(-5px);
+
+    border-color:
+        rgba(99, 255, 154, 0.5);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(23, 52, 61, 0.98),
+            rgba(7, 21, 27, 0.98)
+        );
+}
+
+.app-icon {
+    width: 72px;
+    height: 72px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    font-size: 32px;
+    font-weight: 700;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.2);
+
+    box-shadow:
+        inset
+        0 0 20px
+        rgba(255, 255, 255, 0.03);
+}
+
+.ground-icon {
+    background:
+        linear-gradient(
+            135deg,
+            #1c586b,
+            #0c2d39
+        );
+
+    color: #75dfff;
+}
+
+.flight-icon {
+    background:
+        linear-gradient(
+            135deg,
+            #234f69,
+            #0d2635
+        );
+
+    color: #66dcff;
+}
+
+.checklist-icon {
+    background:
+        linear-gradient(
+            135deg,
+            #275d43,
+            #102e20
+        );
+
+    color: var(--green);
+}
+
+.briefing-icon {
+    background:
+        linear-gradient(
+            135deg,
+            #4e4a24,
+            #292813
+        );
+
+    color: #ffe57c;
+}
+
+.app-name {
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+}
+
+/* ============================================================
+   GROUND
+   ============================================================ */
+
+.ground-layout {
+    max-width: 1000px;
+    margin: auto;
+}
+
+.ground-brand {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    padding: 25px;
+
+    background: var(--panel);
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 10px;
+
+    margin-bottom: 20px;
+}
+
+.ground-logo {
+    width: 75px;
+    height: 75px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #28586b,
+            #0c2732
+        );
+
+    color: var(--cyan);
+
+    font-size: 42px;
+    font-weight: 800;
+
+    border:
+        1px solid
+        rgba(84, 223, 255, 0.35);
+}
+
+.ground-name {
+    font-size: 28px;
+    letter-spacing: 2px;
+}
+
+.ground-description {
+    font-size: 11px;
+    color: var(--gray);
+    letter-spacing: 2px;
+    margin-top: 5px;
+}
+
+.ground-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.ground-button {
+    height: 75px;
+
+    background:
+        rgba(11, 27, 34, 0.94);
+
+    border:
+        1px solid
+        var(--border);
+
+    color: white;
+
+    font-weight: 600;
+    letter-spacing: 1.5px;
+
+    border-radius: 7px;
+
+    cursor: pointer;
+}
+
+.ground-button:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+}
+
+/* ============================================================
+   FLIGHT PLAN TOOLBAR
+   ============================================================ */
+
+.flightplan-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.flightplan-toolbar button,
+.section-heading button {
+    border:
+        1px solid
+        rgba(110, 190, 210, 0.3);
+
+    background:
+        rgba(15, 34, 42, 0.95);
+
+    color: #d8e8ed;
+
+    padding:
+        10px 14px;
+
+    border-radius: 5px;
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.flightplan-toolbar button:hover,
+.section-heading button:hover {
+    border-color: var(--green);
+    color: var(--green);
+}
+
+/* ============================================================
+   FLIGHT PLAN
+   ============================================================ */
+
+.flightplan-layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 18px;
+}
+
+.flight-panel,
+.flight-summary-panel {
+    background: var(--panel);
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 9px;
+
+    padding: 20px;
+}
+
+.panel-title {
+    color: var(--gray);
+
+    font-size: 11px;
+    letter-spacing: 2px;
+
+    margin-bottom: 14px;
+}
+
+.flight-status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 20px;
+
+    font-size: 13px;
+}
+
+.status {
+    padding: 5px 10px;
+
+    border-radius: 4px;
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.status.draft {
+    color: #ffc56b;
+
+    background:
+        rgba(255, 179, 71, 0.1);
+
+    border:
+        1px solid
+        rgba(255, 179, 71, 0.3);
+}
+
+.status.ready {
+    color: var(--green);
+
+    background:
+        rgba(99, 255, 154, 0.1);
+
+    border:
+        1px solid
+        rgba(99, 255, 154, 0.3);
+}
+
+.status.sent {
+    color: var(--cyan);
+
+    background:
+        rgba(84, 223, 255, 0.1);
+
+    border:
+        1px solid
+        rgba(84, 223, 255, 0.3);
+}
+
+.status.completed {
+    color: white;
+
+    background:
+        rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================================
+   AIRPORT
+   ============================================================ */
+
+.airport-grid {
+    display: grid;
+
+    grid-template-columns:
+        1fr 40px 1fr;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 18px;
+}
+
+.airport-box {
+    background:
+        rgba(20, 38, 45, 0.65);
+
+    border:
+        1px solid
+        var(--border);
+
+    padding: 14px;
+
+    border-radius: 6px;
+}
+
+.airport-box label,
+.setting label {
+    display: block;
+
+    color: var(--gray);
+
+    font-size: 9px;
+    letter-spacing: 1.5px;
+
+    margin-bottom: 8px;
+}
+
+.airport-box input,
+.setting select,
+.editor input,
+.editor select,
+.summary-item input {
+    width: 100%;
+
+    background:
+        rgba(4, 13, 17, 0.9);
+
+    border:
+        1px solid
+        rgba(130, 190, 205, 0.22);
+
+    border-radius: 4px;
+
+    color: white;
+
+    padding: 10px;
+
+    outline: none;
+
+    text-transform: uppercase;
+}
+
+.airport-box input:focus,
+.setting select:focus,
+.editor input:focus,
+.editor select:focus {
+    border-color: var(--cyan);
+}
+
+.airport-box button {
+    width: 100%;
+
+    margin-top: 7px;
+
+    padding: 7px;
+
+    background:
+        rgba(45, 88, 101, 0.5);
+
+    border:
+        1px solid
+        rgba(100, 190, 210, 0.25);
+
+    color: #bdeaf3;
+
+    border-radius: 4px;
+
+    cursor: pointer;
+
+    font-size: 9px;
+}
+
+.route-arrow {
+    text-align: center;
+
+    font-size: 24px;
+
+    color: var(--cyan);
+}
+
+/* ============================================================
+   SETTINGS
+   ============================================================ */
+
+.route-settings {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 10px;
+
+    margin-bottom: 25px;
+}
+
+/* ============================================================
+   WAYPOINTS
+   ============================================================ */
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 10px;
+
+    font-size: 11px;
+    letter-spacing: 2px;
+
+    color: var(--gray);
+}
+
+.waypoint-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.waypoint-row {
+    display: grid;
+
+    grid-template-columns:
+        35px 1fr 90px 80px 34px 34px;
+
+    gap: 6px;
+
+    align-items: center;
+
+    background:
+        rgba(17, 33, 39, 0.75);
+
+    border:
+        1px solid
+        rgba(110, 170, 185, 0.12);
+
+    padding: 7px;
+
+    border-radius: 4px;
+}
+
+.waypoint-index {
+    text-align: center;
+
+    color: var(--gray);
+
+    font-size: 11px;
+}
+
+.waypoint-row input {
+    background:
+        rgba(2, 10, 13, 0.8);
+
+    border:
+        1px solid
+        rgba(100, 160, 175, 0.18);
+
+    color: white;
+
+    padding: 7px;
+
+    text-transform: uppercase;
+
+    min-width: 0;
+}
+
+.waypoint-row button {
+    background: transparent;
+
+    border:
+        1px solid
+        rgba(100, 160, 175, 0.2);
+
+    color: #b9c9ce;
+
+    border-radius: 3px;
+
+    cursor: pointer;
+
+    height: 30px;
+}
+
+.waypoint-row button:hover {
+    color: var(--green);
+    border-color: var(--green);
+}
+
+/* ============================================================
+   SUMMARY
+   ============================================================ */
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 10px;
+
+    border-bottom:
+        1px solid
+        rgba(130, 180, 195, 0.09);
+
+    padding:
+        11px 0;
+}
+
+.summary-item span {
+    color: var(--gray);
+
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+.summary-item strong {
+    font-size: 13px;
+    text-align: right;
+}
+
+.summary-item input {
+    width: 90px;
+
+    padding: 6px;
+
+    text-align: right;
+}
+
+.map-preview {
+    height: 150px;
+
+    margin-top: 20px;
+
+    border:
+        1px solid
+        rgba(80, 160, 180, 0.25);
+
+    position: relative;
+
+    overflow: hidden;
+
+    background: #07151a;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--cyan);
+
+    font-size: 11px;
+    letter-spacing: 2px;
+
+    cursor: pointer;
+}
+
+.map-grid {
+    position: absolute;
+    inset: 0;
+
+    background-image:
+        linear-gradient(
+            rgba(90, 180, 200, 0.06) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(90, 180, 200, 0.06) 1px,
+            transparent 1px
+        );
+
+    background-size: 25px 25px;
+}
+
+.map-route {
+    position: absolute;
+
+    width: 70%;
+    height: 2px;
+
+    background: var(--green);
+
+    transform: rotate(-10deg);
+
+    box-shadow:
+        0 0 8px
+        rgba(99, 255, 154, 0.5);
+}
+
+/* ============================================================
+   MAP
+   ============================================================ */
+
+.full-map {
+    height: calc(100% - 130px);
+    min-height: 400px;
+
+    position: relative;
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(20, 58, 68, 0.5),
+            #061217
+        );
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 8px;
+}
+
+.full-map::before,
+.full-map::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background-image:
+        linear-gradient(
+            rgba(80, 170, 190, 0.06) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(80, 170, 190, 0.06) 1px,
+            transparent 1px
+        );
+
+    background-size: 50px 50px;
+}
+
+.map-lines {
+    position: absolute;
+
+    width: 70%;
+    height: 3px;
+
+    left: 15%;
+    top: 50%;
+
+    background: var(--green);
+
+    transform: rotate(-12deg);
+
+    box-shadow:
+        0 0 12px
+        rgba(99, 255, 154, 0.65);
+
+    z-index: 2;
+}
+
+.map-airport {
+    position: absolute;
+
+    width: 55px;
+    height: 55px;
+
+    border-radius: 50%;
+
+    border:
+        2px solid
+        var(--cyan);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 10px;
+
+    z-index: 5;
+
+    background:
+        rgba(5, 20, 26, 0.9);
+}
+
+.departure-map {
+    left: 12%;
+    top: 54%;
+}
+
+.arrival-map {
+    right: 12%;
+    top: 39%;
+}
+
+.map-information {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 10px;
+
+    margin-top: 12px;
+}
+
+.map-information div {
+    background: var(--panel);
+
+    border:
+        1px solid
+        var(--border);
+
+    padding: 12px;
+
+    border-radius: 5px;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.map-information span {
+    color: var(--gray);
+    font-size: 10px;
+}
+
+.map-information strong {
+    color: var(--green);
+}
+
+/* ============================================================
+   CHECKLIST
+   ============================================================ */
+
+.checklist-header {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: flex-end;
+
+    background: var(--panel);
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 8px;
+
+    padding: 20px;
+
+    margin-bottom: 10px;
+}
+
+.checklist-phase {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 3px;
+}
+
+.checklist-progress-text {
+    display: flex;
+
+    gap: 12px;
+
+    margin-top: 7px;
+
+    color: var(--gray);
+
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+#checkProgress {
+    color: var(--green);
+    font-weight: 700;
+}
+
+.phase-indicator {
+    padding: 8px 13px;
+
+    border-radius: 4px;
+
+    color: var(--orange);
+
+    border:
+        1px solid
+        rgba(255, 179, 71, 0.3);
+
+    background:
+        rgba(255, 179, 71, 0.08);
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.phase-indicator.complete {
+    color: var(--green);
+
+    border-color:
+        rgba(99, 255, 154, 0.35);
+
+    background:
+        rgba(99, 255, 154, 0.1);
+}
+
+.progress-bar {
+    height: 5px;
+
+    background:
+        rgba(255, 255, 255, 0.06);
+
+    border-radius: 3px;
+
+    overflow: hidden;
+
+    margin-bottom: 12px;
+}
+
+.progress-bar-fill {
+    height: 100%;
+
+    background: var(--green);
+
+    box-shadow:
+        0 0 10px
+        rgba(99, 255, 154, 0.5);
+
+    transition: width 0.3s;
+}
+
+.checklist-items {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.check-item {
+    display: grid;
+
+    grid-template-columns:
+        42px 1fr auto;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding:
+        11px 14px;
+
+    background:
+        rgba(9, 22, 28, 0.93);
+
+    border:
+        1px solid
+        rgba(110, 170, 185, 0.12);
+
+    border-radius: 5px;
+
+    transition: 0.2s;
+}
+
+.check-item.checked {
+    background:
+        rgba(30, 78, 51, 0.55);
+
+    border-color:
+        rgba(99, 255, 154, 0.35);
+}
+
+.check-number {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.04);
+
+    color: var(--gray);
+
+    font-size: 11px;
+}
+
+.check-item.checked .check-number {
+    background: var(--green);
+    color: #06120b;
+}
+
+.check-text {
+    min-width: 0;
+}
+
+.check-main {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.check-condition {
+    color: var(--gray);
+
+    font-size: 11px;
+
+    margin-top: 3px;
+}
+
+.check-button {
+    min-width: 105px;
+
+    padding:
+        9px 12px;
+
+    background:
+        rgba(20, 39, 46, 0.9);
+
+    border:
+        1px solid
+        rgba(100, 180, 200, 0.25);
+
+    color: #d7e5e9;
+
+    border-radius: 4px;
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.7px;
+
+    cursor: pointer;
+}
+
+.check-button:hover {
+    border-color: var(--green);
+    color: var(--green);
+}
+
+.check-item.checked .check-button {
+    background:
+        rgba(99, 255, 154, 0.15);
+
+    border-color: var(--green);
+    color: var(--green);
+}
+
+.checklist-footer {
+    display: flex;
+    justify-content: flex-end;
+
+    margin-top: 15px;
+}
+
+.next-button {
+    padding:
+        13px 28px;
+
+    background:
+        rgba(50, 60, 62, 0.8);
+
+    color: #737d81;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    border-radius: 5px;
+
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.next-button:not(:disabled) {
+    background:
+        rgba(36, 103, 64, 0.9);
+
+    color: var(--green);
+
+    border-color:
+        rgba(99, 255, 154, 0.45);
+
+    cursor: pointer;
+
+    box-shadow:
+        0 0 15px
+        rgba(99, 255, 154, 0.12);
+}
+
+/* ============================================================
+   BRIEFING
+   ============================================================ */
+
+.briefing-header {
+    display: flex;
+    justify-content: space-between;
+
+    background: var(--panel);
+
+    border:
+        1px solid
+        var(--border);
+
+    padding: 18px;
+
+    border-radius: 7px;
+
+    margin-bottom: 15px;
+}
+
+.briefing-header span {
+    display: block;
+
+    font-size: 9px;
+
+    color: var(--gray);
+
+    letter-spacing: 2px;
+
+    margin-bottom: 5px;
+}
+
+.briefing-header strong {
+    font-size: 17px;
+    letter-spacing: 1px;
+}
+
+.briefing-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    gap: 9px;
+}
+
+.briefing-card {
+    min-height: 130px;
+
+    padding: 15px;
+
+    background: var(--panel);
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 7px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.briefing-card span {
+    color: var(--green);
+    font-size: 11px;
+}
+
+.briefing-card strong {
+    margin-top: 12px;
+
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+
+.briefing-card p {
+    color: var(--gray);
+
+    font-size: 9px;
+    line-height: 1.5;
+
+    margin-top: auto;
+}
+
+.briefing-route {
+    margin-top: 15px;
+
+    padding: 20px;
+
+    background: var(--panel);
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 7px;
+
+    color: var(--green);
+
+    letter-spacing: 2px;
+}
+
+/* ============================================================
+   EDITOR
+   ============================================================ */
+
+.editor {
+    max-width: 600px;
+
+    margin: 20px auto;
+
+    padding: 25px;
+
+    background: var(--panel);
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 8px;
+}
+
+.editor-row {
+    margin-bottom: 15px;
+}
+
+.editor-row label {
+    display: block;
+
+    color: var(--gray);
+
+    font-size: 10px;
+    letter-spacing: 1.5px;
+
+    margin-bottom: 7px;
+}
+
+.primary-button,
+.secondary-button {
+    border-radius: 5px;
+
+    padding:
+        11px 16px;
+
+    cursor: pointer;
+
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.primary-button {
+    width: 100%;
+
+    background:
+        rgba(39, 104, 66, 0.9);
+
+    border:
+        1px solid
+        rgba(99, 255, 154, 0.35);
+
+    color: var(--green);
+}
+
+.secondary-button {
+    background:
+        rgba(30, 42, 47, 0.9);
+
+    border:
+        1px solid
+        var(--border);
+
+    color: #cbd6d9;
+}
+
+/* ============================================================
+   SAVED FLIGHTS
+   ============================================================ */
+
+.saved-flights {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.saved-flight {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr 120px 240px;
+
+    gap: 10px;
+
+    align-items: center;
+
+    background: var(--panel);
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 6px;
+
+    padding: 13px;
+}
+
+.saved-flight strong {
+    font-size: 13px;
+}
+
+.saved-flight span {
+    color: var(--gray);
+    font-size: 11px;
+}
+
+.saved-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.saved-actions button {
+    padding: 7px 9px;
+
+    background:
+        rgba(20, 38, 44, 0.9);
+
+    border:
+        1px solid
+        var(--border);
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 9px;
+}
+
+.saved-actions button:hover {
+    color: var(--green);
+    border-color: var(--green);
+}
+
+/* ============================================================
+   AIRPORT SEARCH
+   ============================================================ */
+
+.airport-search {
+    max-width: 800px;
+    margin: auto;
+}
+
+#airportSearchInput {
+    width: 100%;
+
+    padding: 15px;
+
+    background:
+        rgba(5, 15, 19, 0.95);
+
+    border:
+        1px solid
+        var(--border);
+
+    color: white;
+
+    border-radius: 6px;
+
+    outline: none;
+
+    margin-bottom: 12px;
+}
+
+.airport-result {
+    display: grid;
+
+    grid-template-columns:
+        80px 1fr 120px;
+
+    gap: 15px;
+
+    align-items: center;
+
+    padding: 14px;
+
+    margin-bottom: 6px;
+
+    background: var(--panel);
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 5px;
+
+    cursor: pointer;
+}
+
+.airport-result:hover {
+    border-color: var(--cyan);
+}
+
+.airport-icao {
+    color: var(--cyan);
+    font-weight: 800;
+}
+
+.airport-result small {
+    color: var(--gray);
+}
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    background:
+        rgba(0, 0, 0, 0.72);
+
+    z-index: 100;
+}
+
+.modal-overlay.show {
+    display: flex;
+}
+
+.modal {
+    width: min(450px, 90vw);
+
+    background: #0b181e;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 8px;
+
+    padding: 22px;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0, 0, 0, 0.7);
+}
+
+.modal-title {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 2px;
+
+    margin-bottom: 12px;
+}
+
+.modal-message {
+    color: #b4c3c8;
+
+    line-height: 1.6;
+
+    font-size: 13px;
+
+    margin-bottom: 20px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 8px;
+}
+
+.modal-actions .primary-button {
+    width: auto;
+}
+
+/* ============================================================
+   BOTTOM NAV
+   ============================================================ */
+
+.bottom-nav {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 64px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    background:
+        rgba(5, 14, 18, 0.97);
+
+    border-top:
+        1px solid
+        rgba(120, 190, 205, 0.15);
+
+    z-index: 30;
+}
+
+.bottom-nav button {
+    background: transparent;
+
+    border: 0;
+
+    color: #738086;
+
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 3px;
+
+    font-size: 8px;
+    letter-spacing: 1.5px;
+}
+
+.bottom-nav button span {
+    font-size: 19px;
+}
+
+.bottom-nav button:hover {
+    color: var(--green);
+}
+
+/* ============================================================
+   SYSTEM STATUS
+   ============================================================ */
+
+.system-status {
+    position: absolute;
+
+    bottom: 5px;
+    right: 13px;
+
+    z-index: 40;
+
+    display: flex;
+
+    gap: 8px;
+
+    color: #536167;
+
+    font-size: 7px;
+    letter-spacing: 1px;
+
+    pointer-events: none;
+}
+
+.system-online {
+    color: var(--green);
+}
+
+/* ============================================================
+   ATIS
+   ============================================================ */
+
+.atis-container {
+    max-width: 1050px;
+
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 18px;
+}
+
+/* ============================================================
+   ATIS SEARCH PANEL
+   ============================================================ */
+
+.atis-search-panel {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(17, 36, 43, 0.96),
+            rgba(7, 18, 23, 0.98)
+        );
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 9px;
+
+    padding: 20px;
+
+    box-shadow: var(--shadow);
+}
+
+.atis-section-title {
+    color: var(--gray);
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 10px;
+}
+
+.atis-search-row {
+    display: grid;
+
+    grid-template-columns:
+        1fr 130px;
+
+    gap: 8px;
+}
+
+.atis-airport-input {
+    width: 100%;
+    height: 48px;
+
+    padding: 0 14px;
+
+    background:
+        rgba(3, 12, 16, 0.95);
+
+    border:
+        1px solid
+        rgba(130, 190, 205, 0.25);
+
+    border-radius: 5px;
+
+    color: white;
+
+    outline: none;
+
+    font-size: 17px;
+    font-weight: 700;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+
+    transition: 0.2s;
+}
+
+.atis-airport-input::placeholder {
+    color: #58676d;
+    letter-spacing: 2px;
+}
+
+.atis-airport-input:focus {
+    border-color: var(--cyan);
+
+    box-shadow:
+        0 0 12px
+        rgba(84, 223, 255, 0.12);
+}
+
+.atis-search-button {
+    height: 48px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(35, 91, 108, 0.95),
+            rgba(16, 48, 60, 0.95)
+        );
+
+    border:
+        1px solid
+        rgba(84, 223, 255, 0.32);
+
+    border-radius: 5px;
+
+    color: var(--cyan);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.atis-search-button:hover {
+    border-color: var(--cyan);
+
+    background:
+        rgba(35, 91, 108, 0.9);
+
+    box-shadow:
+        0 0 14px
+        rgba(84, 223, 255, 0.15);
+}
+
+.atis-airport-status {
+    margin-top: 10px;
+
+    color: var(--gray);
+
+    font-size: 9px;
+
+    letter-spacing: 1.5px;
+}
+
+/* ============================================================
+   ATIS INFORMATION
+   ============================================================ */
+
+.atis-information {
+    min-height: 300px;
+}
+
+/* ============================================================
+   ATIS WAITING
+   ============================================================ */
+
+.atis-waiting {
+    min-height: 300px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 40px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(12, 28, 35, 0.96),
+            rgba(6, 16, 21, 0.98)
+        );
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 9px;
+
+    box-shadow: var(--shadow);
+}
+
+.atis-waiting-icon {
+    width: 72px;
+    height: 72px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 18px;
+
+    border:
+        1px solid
+        rgba(84, 223, 255, 0.3);
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(30, 78, 94, 0.8),
+            rgba(9, 30, 39, 0.9)
+        );
+
+    color: var(--cyan);
+
+    font-size: 13px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    box-shadow:
+        0 0 20px
+        rgba(84, 223, 255, 0.08);
+}
+
+.atis-waiting-title {
+    font-size: 17px;
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 9px;
+}
+
+.atis-waiting-text {
+    max-width: 450px;
+
+    color: var(--gray);
+
+    font-size: 11px;
+
+    line-height: 1.7;
+
+    letter-spacing: 0.7px;
+}
+
+/* ============================================================
+   ATIS AIRPORT DATA
+   ============================================================ */
+
+.atis-airport-data {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+/* ============================================================
+   ATIS AIRPORT HEADER
+   ============================================================ */
+
+.atis-airport-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 20px 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18, 42, 49, 0.97),
+            rgba(7, 20, 25, 0.98)
+        );
+
+    border:
+        1px solid
+        rgba(84, 223, 255, 0.2);
+
+    border-radius: 8px;
+
+    box-shadow: var(--shadow);
+}
+
+.atis-airport-name {
+    font-size: 25px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    color: white;
+}
+
+.atis-airport-icao {
+    margin-top: 4px;
+
+    color: var(--cyan);
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 3px;
+}
+
+.atis-live-status {
+    padding:
+        7px 11px;
+
+    border:
+        1px solid
+        rgba(99, 255, 154, 0.3);
+
+    border-radius: 4px;
+
+    background:
+        rgba(99, 255, 154, 0.07);
+
+    color: var(--green);
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+/* ============================================================
+   ATIS FREQUENCY CARDS
+   ============================================================ */
+
+.atis-frequency-card {
+    min-height: 72px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding:
+        13px 18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(16, 34, 41, 0.96),
+            rgba(8, 19, 24, 0.98)
+        );
+
+    border:
+        1px solid
+        rgba(110, 180, 195, 0.15);
+
+    border-radius: 6px;
+
+    transition: 0.2s;
+}
+
+.atis-frequency-card:hover {
+    border-color:
+        rgba(84, 223, 255, 0.35);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(20, 43, 51, 0.98),
+            rgba(8, 21, 27, 0.98)
+        );
+
+    transform:
+        translateX(2px);
+}
+
+.atis-frequency-main {
+    min-width: 0;
+}
+
+.atis-service-name {
+    font-size: 14px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.8px;
+
+    color: #e6eef1;
+}
+
+.atis-service-code {
+    margin-top: 5px;
+
+    color: var(--gray);
+
+    font-size: 9px;
+
+    letter-spacing: 1.5px;
+}
+
+.atis-frequency {
+    flex-shrink: 0;
+
+    min-width: 105px;
+
+    padding:
+        9px 12px;
+
+    text-align: center;
+
+    background:
+        rgba(4, 14, 18, 0.9);
+
+    border:
+        1px solid
+        rgba(99, 255, 154, 0.22);
+
+    border-radius: 4px;
+
+    color: var(--green);
+
+    font-size: 17px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    font-variant-numeric:
+        tabular-nums;
+
+    box-shadow:
+        inset
+        0 0 12px
+        rgba(99, 255, 154, 0.03);
+}
+
+/* ============================================================
+   PARIS CONTROL
+   ============================================================ */
+
+.atis-control-section {
+    margin-top: 10px;
+
+    padding-top: 16px;
+
+    border-top:
+        1px solid
+        rgba(124, 180, 198, 0.16);
+}
+
+.atis-control-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 10px;
+
+    color: var(--gray);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+}
+
+.atis-control-title::before {
+    content: "";
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background: var(--orange);
+
+    box-shadow:
+        0 0 7px
+        rgba(255, 179, 71, 0.5);
+}
+
+.control-card {
+    border-color:
+        rgba(255, 179, 71, 0.12);
+}
+
+.control-card:hover {
+    border-color:
+        rgba(255, 179, 71, 0.35);
+}
+
+.control-card .atis-frequency {
+    color: var(--orange);
+
+    border-color:
+        rgba(255, 179, 71, 0.22);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1000px) {
+
+    .app-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .flightplan-layout {
+        grid-template-columns:
+            1fr;
+    }
+
+    .briefing-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+
+    .topbar {
+        height: 58px;
+        padding: 0 12px;
+    }
+
+    .date {
+        font-size: 11px;
+    }
+
+    .clock {
+        font-size: 22px;
+    }
+
+    .page {
+        padding:
+            18px 14px
+            80px;
+    }
+
+    .route-settings {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .ground-buttons {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .airport-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+    .route-arrow {
+        transform:
+            rotate(90deg);
+    }
+
+    .check-item {
+        grid-template-columns:
+            34px 1fr;
+    }
+
+    .check-button {
+        grid-column: 2;
+        width: 100%;
+    }
+
+    .briefing-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+    .saved-flight {
+        grid-template-columns:
+            1fr;
+    }
+
+    .waypoint-row {
+        grid-template-columns:
+            30px 1fr 60px 30px 30px;
+    }
+
+    .waypoint-row input:nth-of-type(2) {
+        display: none;
+    }
+
+    /* ========================================================
+       ATIS RESPONSIVE
+       ======================================================== */
+
+    .atis-search-row {
+        grid-template-columns:
+            1fr;
+    }
+
+    .atis-search-button {
+        width: 100%;
+    }
+
+    .atis-airport-header {
+        align-items: flex-start;
+
+        gap: 12px;
+
+        flex-direction: column;
+    }
+
+    .atis-frequency-card {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 12px;
+    }
+
+    .atis-frequency {
+        width: 100%;
+    }
+
+    .atis-waiting {
+        padding:
+            30px 18px;
+    }
+}
+
+/* ============================================================
+   FLIGHT CENTER ARCHITECTURE
+   ============================================================ */
+
+.home-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 22px;
+    max-width: 420px;
+}
+
+.home-actions .primary-button,
+.home-actions .secondary-button {
+    flex: 1;
+}
+
+.app-description {
+    color: var(--gray);
+    font-size: 8px;
+    letter-spacing: 1.2px;
+    text-align: center;
+}
+
+.flight-center-header {
+    max-width: 1150px;
+    margin: 0 auto 18px;
+    padding: 18px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18, 39, 47, 0.96),
+            rgba(7, 18, 23, 0.98)
+        );
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    box-shadow: var(--shadow);
+}
+
+.flight-center-identity {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.flight-center-label {
+    color: var(--gray);
+    font-size: 9px;
+    letter-spacing: 2px;
+}
+
+.flight-center-identity strong {
+    color: white;
+    font-size: 21px;
+    letter-spacing: 1.5px;
+}
+
+.flight-center-identity span:last-child {
+    color: var(--cyan);
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+.flight-center-status {
+    padding: 8px 13px;
+    border-radius: 4px;
+    color: var(--orange);
+    background: rgba(255, 179, 71, 0.08);
+    border: 1px solid rgba(255, 179, 71, 0.3);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.flight-center-grid {
+    max-width: 1150px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+}
+
+.flight-center-card {
+    min-height: 135px;
+    padding: 17px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(17, 37, 44, 0.96),
+            rgba(6, 17, 22, 0.98)
+        );
+    border: 1px solid rgba(130, 191, 207, 0.18);
+    border-radius: 9px;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0,0,0,.32);
+    transition: .2s ease;
+}
+
+.flight-center-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(99,255,154,.48);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(23, 52, 61, 0.98),
+            rgba(7, 21, 27, 0.98)
+        );
+}
+
+.flight-center-card:active {
+    transform: translateY(-1px);
+}
+
+.fc-icon {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(35, 82, 99, .9),
+            rgba(10, 31, 40, .95)
+        );
+    border: 1px solid rgba(84,223,255,.2);
+    color: var(--cyan);
+    font-size: 23px;
+    font-weight: 700;
+}
+
+.fc-name {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+}
+
+.flight-center-card small {
+    color: var(--gray);
+    font-size: 7px;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+/* ============================================================
+   NEW FLIGHT
+   ============================================================ */
+
+.new-flight-form {
+    width: min(850px, 100%);
+    margin: 0 auto 30px;
+    padding: 24px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    box-shadow: var(--shadow);
+}
+
+.new-flight-field {
+    margin-bottom: 15px;
+}
+
+.new-flight-field label {
+    display: block;
+    margin-bottom: 7px;
+    color: var(--gray);
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+}
+
+.new-flight-field input,
+.new-flight-field select,
+.new-flight-field textarea {
+    width: 100%;
+    padding: 11px;
+    background: rgba(4,13,17,.92);
+    border: 1px solid rgba(130,190,205,.22);
+    border-radius: 4px;
+    color: white;
+    outline: none;
+    font-family: inherit;
+    text-transform: uppercase;
+}
+
+.new-flight-field textarea {
+    resize: vertical;
+    min-height: 78px;
+}
+
+.new-flight-field input:focus,
+.new-flight-field select:focus,
+.new-flight-field textarea:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 10px rgba(84,223,255,.08);
+}
+
+.new-flight-two-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* ============================================================
+   FLIGHT CENTER MODULE PLACEHOLDERS
+   ============================================================ */
+
+.module-placeholder {
+    width: min(900px, 100%);
+    min-height: 260px;
+    margin: 40px auto;
+    padding: 40px 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15,33,40,.96),
+            rgba(6,17,22,.98)
+        );
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.module-placeholder strong {
+    color: var(--cyan);
+    font-size: 20px;
+    letter-spacing: 3px;
+}
+
+.module-placeholder span {
+    color: var(--gray);
+    font-size: 9px;
+    letter-spacing: 2px;
+}
+
+/* ============================================================
+   FLIGHT CENTER RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1100px) {
+    .flight-center-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 850px) {
+    .flight-center-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .home-actions {
+        max-width: none;
+        flex-direction: column;
+    }
+
+    .flight-center-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .flight-center-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .new-flight-two-columns {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}
+
+@media (max-width: 420px) {
+    .flight-center-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .flight-center-card {
+        min-height: 105px;
+        flex-direction: row;
+        justify-content: flex-start;
+        padding: 12px;
+    }
+
+    .fc-icon {
+        width: 44px;
+        height: 44px;
+        flex-shrink: 0;
+    }
+}
