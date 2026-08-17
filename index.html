@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fenix EFB Pilot</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =========================================================
+         TOP BAR
+         ========================================================= -->
+
+    <div class="top-bar">
+
+        <div class="date-time">
+            <span id="currentDate">16 Aug 2026</span>
+            <span id="currentTime">21:20</span>
+        </div>
+
+        <div class="battery-container">
+
+            <span id="batteryPercent">100%</span>
+
+            <div class="battery-icon">
+                <div
+                    class="battery-level"
+                    id="batteryLevel"
+                ></div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         HOME
+         ========================================================= -->
+
+    <main class="apps-container">
+
+        <!-- FENIX -->
+
+        <div class="app">
+
+            <div
+                class="app-icon app-fenix"
+            >
+
+                <img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6xtUlKZcLb6jWPJCp5pMRJ8Voo9BS1sUGoEPlmr-rcQ&s=10"
+                    alt="Fenix"
+                >
+
+            </div>
+
+            <div class="app-name">
+                Fenix
+            </div>
+
+        </div>
+
+
+        <!-- APP 2 -->
+
+        <div class="app">
+
+            <div class="app-icon empty-app"></div>
+
+        </div>
+
+
+        <!-- ARRIVAL PERF -->
+
+        <div class="app">
+
+            <div
+                class="app-icon app-arrival"
+            >
+
+                <img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzlvZElXPxK2bHlnDwf6HytL603Gmv9ggk4mJSO9bGeg&s=10"
+                    alt="Arrival Perf"
+                >
+
+            </div>
+
+            <div class="app-name">
+                Arrival Perf
+            </div>
+
+        </div>
+
+
+        <!-- APP 4 -->
+
+        <div class="app">
+
+            <div class="app-icon empty-app"></div>
+
+        </div>
+
+
+        <!-- APP 5 -->
+
+        <div class="app">
+
+            <div class="app-icon empty-app"></div>
+
+        </div>
+
+
+        <!-- SETTINGS -->
+
+        <div class="app">
+
+            <div
+                class="app-icon app-settings"
+                id="settingsApp"
+                tabindex="0"
+            >
+
+                <img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRi7KVjI_iASETV1hgD40S0AnKo8pnDeDpXEJPEpTMbAA&s=10"
+                    alt="Settings"
+                >
+
+            </div>
+
+            <div class="app-name">
+                Settings
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================================================
+         SETTINGS
+         ========================================================= -->
+
+    <section
+        id="settingsScreen"
+        class="settings-screen hidden"
+    >
+
+        <header class="settings-header">
+
+            <button
+                id="settingsBackButton"
+                class="back-button"
+            >
+                ‹
+            </button>
+
+            <div class="settings-title">
+
+                <h1>Settings</h1>
+
+                <span>EFB SYSTEM</span>
+
+            </div>
+
+        </header>
+
+
+        <div class="settings-content">
+
+
+            <!-- DEVICE -->
+
+            <section class="settings-section">
+
+                <div class="section-title">
+                    DEVICE
+                </div>
+
+                <div class="settings-card">
+
+                    <div class="setting-row">
+
+                        <div class="setting-icon">▰</div>
+
+                        <div class="setting-info">
+
+                            <div class="setting-name">
+                                Battery
+                            </div>
+
+                            <div class="setting-description">
+                                Current battery status
+                            </div>
+
+                        </div>
+
+                        <div
+                            class="setting-value"
+                            id="deviceBatteryValue"
+                        >
+                            --%
+                        </div>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-icon">◷</div>
+
+                        <div class="setting-info">
+
+                            <div class="setting-name">
+                                Date & Time
+                            </div>
+
+                            <div class="setting-description">
+                                Europe / Paris
+                            </div>
+
+                        </div>
+
+                        <div
+                            class="setting-value"
+                            id="settingsTime"
+                        >
+                            --:--
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="setting-row clickable"
+                        id="displayBrightnessRow"
+                    >
+
+                        <div class="setting-icon">☼</div>
+
+                        <div class="setting-info">
+
+                            <div class="setting-name">
+                                Brightness
+                            </div>
+
+                            <div class="setting-description">
+                                Screen brightness
+                            </div>
+
+                        </div>
+
+                        <div
+                            class="setting-value"
+                            id="brightnessSettingValue"
+                        >
+                            100%
+                        </div>
+
+                        <div class="setting-arrow">
+                            ›
+                        </div>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-icon">◖</div>
+
+                        <div class="setting-info">
+
+                            <div class="setting-name">
+                                Volume
+                            </div>
+
+                            <div class="setting-description">
+                                EFB system volume
+                            </div>
+
+                        </div>
+
+                        <div class="setting-control">
+
+                            <input
+                                id="volumeRange"
+                                type="range"
+                                min="0"
+                                max="100"
+                                value="80"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-icon">✈</div>
+
+                        <div class="setting-info">
+
+                            <div class="setting-name">
+                                Flight Mode
+                            </div>
+
+                            <div class="setting-description">
+                                Disable wireless functions
+                            </div>
+
+                        </div>
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="flightModeSwitch"
+                            >
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- DISPLAY -->
+
+            <section class="settings-section">
+
+                <div class="section-title">
+                    DISPLAY
+                </div>
+
+                <div class="settings-card">
+
+
+                    <div
+                        class="setting-row clickable"
+                        id="brightnessDisplayRow"
+                    >
+
+                        <div class="setting-icon">
+                            ☀
+                        </div>
+
+                        <div class="setting-info">
+
+                            <div class="setting-name">
+                                Brightness
+                            </div>
+
+                            <div class="setting-description">
+                                Adjust display intensity
+                            </div>
+
+                        </div>
+
+                        <div class="setting-arrow">
+                            ›
+                        </div>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-icon">
+                            ◐
+                        </div>
+
+                        <div class="setting-info">
+
+                            <div class="setting-name">
+                                Day / Night Mode
+                            </div>
+
+                            <div class="setting-description">
+                                Display appearance
+                            </div>
+
+                        </div>
+
+                        <label class="switch visible-switch">
+
+                            <input
+                                type="checkbox"
+                                id="nightModeSwitch"
+                            >
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <div
+                        class="setting-row clickable"
+                        id="wallpaperRow"
+                    >
+
+                        <div class="setting-icon">
+                            ▧
+                        </div>
+
+                        <div class="setting-info">
+
+                            <div class="setting-name">
+                                Wallpaper
+                            </div>
+
+                            <div class="setting-description">
+                                Choose your EFB background
+                            </div>
+
+                        </div>
+
+                        <div class="setting-arrow">
+                            ›
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- SYSTEM -->
+
+            <section class="settings-section">
+
+                <div class="section-title">
+                    SYSTEM
+                </div>
+
+                <div class="settings-card">
+
+
+                    <div
+                        class="setting-row clickable"
+                        id="sleepRow"
+                    >
+
+                        <div class="setting-icon">
+                            ◌
+                        </div>
+
+                        <div class="setting-info">
+
+                            <div class="setting-name">
+                                Sleep
+                            </div>
+
+                            <div class="setting-description">
+                                Put the EFB into sleep mode
+                            </div>
+
+                        </div>
+
+                        <div class="setting-arrow">
+                            ›
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="setting-row clickable"
+                        id="rebootRow"
+                    >
+
+                        <div class="setting-icon">
+                            ↻
+                        </div>
+
+                        <div class="setting-info">
+
+                            <div class="setting-name">
+                                Reboot EFB
+                            </div>
+
+                            <div class="setting-description">
+                                Restart the EFB interface
+                            </div>
+
+                        </div>
+
+                        <div class="setting-arrow">
+                            ›
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="setting-row clickable"
+                        id="resetRow"
+                    >
+
+                        <div class="setting-icon">
+                            ↺
+                        </div>
+
+                        <div class="setting-info">
+
+                            <div class="setting-name">
+                                Reset Settings
+                            </div>
+
+                            <div class="setting-description">
+                                Restore default settings
+                            </div>
+
+                        </div>
+
+                        <div class="setting-arrow">
+                            ›
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- SIMULATOR -->
+
+            <section class="settings-section">
+
+                <div class="section-title">
+                    SIMULATOR
+                </div>
+
+                <div class="settings-card">
+
+
+                    <div
+                        class="setting-row clickable"
+                        id="simbriefRow"
+                    >
+
+                        <div class="setting-icon">
+                            S
+                        </div>
+
+                        <div class="setting-info">
+
+                            <div class="setting-name">
+                                SimBrief Account
+                            </div>
+
+                            <div class="setting-description">
+                                Connect your SimBrief account
+                            </div>
+
+                        </div>
+
+                        <div
+                            class="setting-value"
+                            id="simbriefSettingStatus"
+                        >
+                            Not connected
+                        </div>
+
+                        <div class="setting-arrow">
+                            ›
+                        </div>
+
+                    </div>
+
+
+                    <div class="setting-row clickable">
+
+                        <div class="setting-icon">
+                            ⌁
+                        </div>
+
+                        <div class="setting-info">
+
+                            <div class="setting-name">
+                                Simulator Settings
+                            </div>
+
+                            <div class="setting-description">
+                                Flight simulator configuration
+                            </div>
+
+                        </div>
+
+                        <div class="setting-arrow">
+                            ›
+                        </div>
+
+                    </div>
+
+
+                    <div class="setting-row clickable">
+
+                        <div class="setting-icon">
+                            ✈
+                        </div>
+
+                        <div class="setting-info">
+
+                            <div class="setting-name">
+                                Aircraft Settings
+                            </div>
+
+                            <div class="setting-description">
+                                Aircraft configuration
+                            </div>
+
+                        </div>
+
+                        <div class="setting-arrow">
+                            ›
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ABOUT -->
+
+            <section class="settings-section">
+
+                <div class="section-title">
+                    ABOUT
+                </div>
+
+                <div class="settings-card">
+
+                    <div class="setting-row">
+
+                        <div class="setting-icon">
+                            i
+                        </div>
+
+                        <div class="setting-info">
+
+                            <div class="setting-name">
+                                EFB Version
+                            </div>
+
+                            <div class="setting-description">
+                                Current EFB software version
+                            </div>
+
+                        </div>
+
+                        <div class="setting-value">
+                            1.0.0
+                        </div>
+
+                    </div>
+
+
+                    <div class="setting-row clickable">
+
+                        <div class="setting-icon">
+                            ⌘
+                        </div>
+
+                        <div class="setting-info">
+
+                            <div class="setting-name">
+                                System Information
+                            </div>
+
+                            <div class="setting-description">
+                                Device and software information
+                            </div>
+
+                        </div>
+
+                        <div class="setting-arrow">
+                            ›
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         BRIGHTNESS PAGE
+         ========================================================= -->
+
+    <section
+        id="brightnessScreen"
+        class="sub-screen hidden"
+    >
+
+        <header class="settings-header">
+
+            <button
+                id="brightnessBackButton"
+                class="back-button"
+            >
+                ‹
+            </button>
+
+            <div class="settings-title">
+
+                <h1>Brightness</h1>
+
+                <span>DISPLAY</span>
+
+            </div>
+
+        </header>
+
+
+        <div class="brightness-page">
+
+            <div class="brightness-glass-card">
+
+                <div class="brightness-label">
+                    BRIGHTNESS
+                </div>
+
+                <div
+                    class="brightness-percentage"
+                    id="brightnessPercentage"
+                >
+                    100%
+                </div>
+
+
+                <div class="brightness-slider-area">
+
+                    <span class="brightness-small">
+                        ☼
+                    </span>
+
+                    <div class="glass-slider">
+
+                        <div
+                            class="glass-slider-fill"
+                            id="brightnessSliderFill"
+                        ></div>
+
+                        <input
+                            type="range"
+                            id="brightnessSlider"
+                            min="20"
+                            max="100"
+                            value="100"
+                        >
+
+                        <div
+                            class="glass-slider-knob"
+                            id="brightnessSliderKnob"
+                        ></div>
+
+                    </div>
+
+                    <span class="brightness-large">
+                        ☀
+                    </span>
+
+                </div>
+
+
+                <div class="brightness-hint">
+                    Drag to adjust display brightness
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         WALLPAPER
+         ========================================================= -->
+
+    <section
+        id="wallpaperScreen"
+        class="sub-screen hidden"
+    >
+
+        <header class="settings-header">
+
+            <button
+                id="wallpaperBackButton"
+                class="back-button"
+            >
+                ‹
+            </button>
+
+            <div class="settings-title">
+
+                <h1>Wallpaper</h1>
+
+                <span>DISPLAY</span>
+
+            </div>
+
+        </header>
+
+
+        <div class="wallpaper-content">
+
+            <div
+                class="wallpaper-gallery"
+                id="wallpaperGallery"
+            >
+
+
+                <!-- AIR FRANCE -->
+
+                <button
+                    class="wallpaper-item"
+                    data-wallpaper="airfrance"
+                    data-image="https://www.performics.com/fr/wp-content/uploads/2023/03/Image-de-garde-article-12.jpg"
+                >
+
+                    <img
+                        src="https://www.performics.com/fr/wp-content/uploads/2023/03/Image-de-garde-article-12.jpg"
+                        alt="Air France"
+                    >
+
+                    <div class="wallpaper-name">
+                        Air France
+                    </div>
+
+                </button>
+
+
+                <!-- TRANSAVIA -->
+
+                <button
+                    class="wallpaper-item"
+                    data-wallpaper="transavia"
+                    data-image="https://cdn.sanity.io/images/vf63fv1z/production/58445b30a4ee75b5e75544dc73f826986e4c05ff-1200x630.jpg"
+                >
+
+                    <img
+                        src="https://cdn.sanity.io/images/vf63fv1z/production/58445b30a4ee75b5e75544dc73f826986e4c05ff-1200x630.jpg"
+                        alt="Transavia"
+                    >
+
+                    <div class="wallpaper-name">
+                        Transavia
+                    </div>
+
+                </button>
+
+
+                <!-- ORLY -->
+
+                <button
+                    class="wallpaper-item"
+                    data-wallpaper="orly"
+                    data-image="https://media.istockphoto.com/id/537337166/fr/photo/tour-de-contr%C3%B4le-de-trafic-a%C3%A9rien-et-airplance-%C3%A0-l%C3%A9roport-de-paris.jpg?s=612x612&w=0&k=20&c=E_IVaiufNx-r8fM9DIw5jgWhxnXiuSHAvtaUkxZzzg4="
+                >
+
+                    <img
+                        src="https://media.istockphoto.com/id/537337166/fr/photo/tour-de-contr%C3%B4le-de-trafic-a%C3%A9rien-et-airplance-%C3%A0-l%C3%A9roport-de-paris.jpg?s=612x612&w=0&k=20&c=E_IVaiufNx-r8fM9DIw5jgWhxnXiuSHAvtaUkxZzzg4="
+                        alt="Orly"
+                    >
+
+                    <div class="wallpaper-name">
+                        Orly
+                    </div>
+
+                </button>
+
+
+                <!-- PLACEHOLDERS -->
+
+                <button
+                    class="wallpaper-item placeholder-wallpaper"
+                    data-wallpaper="wallpaper4"
+                >
+
+                    <div class="placeholder-preview">
+                        Wallpaper 4
+                    </div>
+
+                    <div class="wallpaper-name">
+                        Wallpaper 4
+                    </div>
+
+                </button>
+
+
+                <button
+                    class="wallpaper-item placeholder-wallpaper"
+                    data-wallpaper="wallpaper5"
+                >
+
+                    <div class="placeholder-preview">
+                        Wallpaper 5
+                    </div>
+
+                    <div class="wallpaper-name">
+                        Wallpaper 5
+                    </div>
+
+                </button>
+
+
+                <button
+                    class="wallpaper-item placeholder-wallpaper"
+                    data-wallpaper="wallpaper6"
+                >
+
+                    <div class="placeholder-preview">
+                        Wallpaper 6
+                    </div>
+
+                    <div class="wallpaper-name">
+                        Wallpaper 6
+                    </div>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         SIMBRIEF ACCOUNT
+         ========================================================= -->
+
+    <section
+        id="simbriefScreen"
+        class="sub-screen hidden"
+    >
+
+        <header class="settings-header">
+
+            <button
+                id="simbriefBackButton"
+                class="back-button"
+            >
+                ‹
+            </button>
+
+            <div class="settings-title">
+
+                <h1>SimBrief Account</h1>
+
+                <span>SIMULATOR</span>
+
+            </div>
+
+        </header>
+
+
+        <div class="simbrief-page">
+
+            <div class="simbrief-glass-card">
+
+                <div class="simbrief-logo">
+                    SB
+                </div>
+
+                <div class="simbrief-card-title">
+                    SimBrief
+                </div>
+
+                <div class="simbrief-description">
+                    Connect your SimBrief account to use flight
+                    planning data.
+                </div>
+
+
+                <div
+                    id="simbriefConnected"
+                    class="simbrief-status connected-status hidden"
+                >
+                    ✓ SIMBRIEF CONNECTED
+                </div>
+
+
+                <div
+                    id="simbriefNotConnected"
+                    class="simbrief-status not-connected-status"
+                >
+                    NOT CONNECTED
+                </div>
+
+
+                <button
+                    id="connectSimbriefButton"
+                    class="simbrief-main-button"
+                >
+                    CONNECT TO SIMBRIEF
+                </button>
+
+
+                <button
+                    id="disconnectSimbriefButton"
+                    class="simbrief-disconnect-button hidden"
+                >
+                    DISCONNECT
+                </button>
+
+
+                <div class="simbrief-security">
+
+                    <span>
+                        🔒
+                    </span>
+
+                    <span>
+                        You will authenticate directly with SimBrief.
+                        Your password is never requested or stored
+                        by this EFB.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         SLEEP MODE
+         ========================================================= -->
+
+    <section
+        id="sleepScreen"
+        class="sleep-screen hidden"
+    >
+
+        <div class="sleep-content">
+
+            <h1>
+                SLEEP MODE
+            </h1>
+
+            <p>
+                The tablet is sleeping.
+            </p>
+
+        </div>
+
+        <button
+            id="finishSleepButton"
+            class="finish-sleep-button"
+        >
+            FINISH SLEEP
+        </button>
+
+    </section>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
